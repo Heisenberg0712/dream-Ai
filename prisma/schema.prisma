@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model analysis {
+  id         Int      @id(map: "Analysis_pkey") @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  emotion    String
+  analysis   String
+  dream_id   Int
+  dream      dream    @relation(fields: [dream_id], references: [id], onDelete: Cascade, map: "Analysis_dream_id_fkey")
+}
+
+model dream {
+  id         Int        @id(map: "Dream_pkey") @default(autoincrement())
+  title      String
+  content    String
+  created_at DateTime   @default(now()) @db.Timestamptz(6)
+  analysis   analysis[]
+}
