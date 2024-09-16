@@ -8,16 +8,22 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import { CardContent, Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { IconCaretDown } from "@tabler/icons-react";
 import { createClient } from "@/app/utils/supabase/client/supabase";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LatestAnalysis() {
   const [latestAnalysisData, setLatestAnalysisData] = useState<
     Array<analysis | null>
   >([]);
   const [latestDreams, setLatestDreams] = useState<Array<dream>>([]);
+  const [api, setApi] = useState<CarouselApi>();
+  const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
+  const router = useRouter();
   const supabase = createClient();
 
   const listenToAnalysisInsert = async (payload: any) => {
@@ -85,33 +91,53 @@ export default function LatestAnalysis() {
     }
   }, [latestDreams]);
 
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+    setCurrentCardIndex(api.selectedScrollSnap() + 1);
+    api.on("select", () => {
+      setCurrentCardIndex(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
   return (
-    <Carousel
-      orientation="horizontal"
-      className=" w-full max-w-md mx-auto mt-4 "
-    >
-      <CarouselContent>
-        {latestAnalysisData.map((analysisData, index) => (
-          <CarouselItem key={index} className=" flex flex-col justify-center">
-            <Card className="border border-gray-500 h-[300px] ">
-              <CardHeader>
-                <CardTitle>Title: {latestDreams.at(index)?.title}</CardTitle>
-              </CardHeader>
-              <CardContent className=" text-justify text-sm">
-                <div className="overflow-y-auto h-full">
-                  {analysisData != null && analysisData.analysis}
-                </div>
-              </CardContent>
-            </Card>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselNext className="" />
-      <CarouselPrevious />
-      <div className="flex justify-center animate-bounce mt-2 text-slate-500 ">
-        <IconCaretDown stroke={2} className="cursor-pointer" />
-      </div>
-    </Carousel>
+    <div>
+      <Carousel
+        orientation="horizontal"
+        className=" w-full max-w-md mx-auto mt-4 "
+        setApi={setApi}
+      >
+        <CarouselContent>
+          {latestAnalysisData.map((analysisData, index) => (
+            <CarouselItem key={index} className=" flex flex-col justify-center">
+              <Card className="border border-gray-500 h-[300px] ">
+                <CardHeader>
+                  <CardTitle>Title: {latestDreams.at(index)?.title}</CardTitle>
+                </CardHeader>
+                <CardContent className=" text-justify text-sm">
+                  <div className="overflow-y-auto h-full">
+                    {analysisData != null && analysisData.analysis}
+                  </div>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext className="" />
+        <CarouselPrevious />
+      </Carousel>
+      {!api?.canScrollNext() && (
+        <div className="flex justify-center animate-bounce mt-2 text-slate-500 hover:cursor-pointer">
+          <Link href="/dashboard/mydreams">more dreams...</Link>
+        </div>
+      )}
+      {api?.canScrollNext() && (
+        <div className="flex justify-center animate-bounce mt-2 text-slate-500 ">
+          {currentCardIndex} of 3
+        </div>
+      )}
+    </div>
   );
 }
 

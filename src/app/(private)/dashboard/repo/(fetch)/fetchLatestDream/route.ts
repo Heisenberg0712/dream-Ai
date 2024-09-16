@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
       },
       take: 3,
     });
+
     return NextResponse.json({
       data: latestDream,
       status: 200,

@@ -28,6 +28,7 @@ export async function analyse(formData: z.infer<typeof FormSchema>) {
 export const dreamInsertListener = (payload: any) => {
   console.log("Row inserted in Dream table");
 };
+
 export const analysisInsertListener = (payload: any) => {
   console.log("Row inserted in Analysis table");
 };

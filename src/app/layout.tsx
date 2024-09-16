@@ -1,4 +1,3 @@
-import ToastProvider from "./(provider)/toast.provider";
 import "./globals.css";
 
 export const metadata = {
