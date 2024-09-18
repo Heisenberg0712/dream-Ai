@@ -11,7 +11,6 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { CardContent, Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { IconCaretDown } from "@tabler/icons-react";
 import { createClient } from "@/app/utils/supabase/client/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

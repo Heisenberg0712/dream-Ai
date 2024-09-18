@@ -48,6 +48,9 @@ export default function EmotionChart({
   return (
     <div>
       <Card className="flex flex-col">
+        <CardHeader className="items-center pb-0">
+          <CardTitle>Emotion Distribution in Dreams</CardTitle>
+        </CardHeader>
         <CardContent className="flex-1 pb-0">
           <ChartContainer
             config={chartConfig}

@@ -6,8 +6,10 @@ import { CardHeader, Card, CardContent } from "@/components/ui/card";
 import EmotionChart from "./pieChart";
 import { analysis, dream } from "@prisma/client";
 import { ChartDataDictionary } from "@/app/types/chartData";
+import { useRouter } from "next/navigation";
 
 export default function MyDreams() {
+  const router = useRouter();
   const [allDreams, setAllDreams] = useState<Array<dream>>([]);
   const [allRelatedAnalysis, setAllRelatedAnalysis] = useState<Array<analysis>>(
     []
@@ -43,6 +45,11 @@ export default function MyDreams() {
     setLoadingChart(true);
   }, [allRelatedAnalysis]);
 
+  const goToDreamAnalysis = (item: dream) => {
+    let dreamId: string = item.id.toString();
+    router.push(`/dashboard/analysisPage/${dreamId}`);
+  };
+
   return (
     <div className="border border-red-500 p-4 max-w-md mx-auto h-screen flex flex-col overflow-hidden">
       <header className=" flex justify-center p-2 m-1 items-center gap-1 font-bold">
@@ -51,7 +58,7 @@ export default function MyDreams() {
       <div className="h-1/2 w-11/12 border-2 border-gray-400 p-2 mx-auto rounded-md">
         <ScrollArea className="h-full w-full mx-auto ">
           {allDreams.map((dream, index) => (
-            <div key={index}>
+            <div key={index} onClick={() => goToDreamAnalysis(dream)}>
               <Card className="m-2 border rounded-sm border-gray-400 pt-5 hover:bg-gray-400">
                 <CardHeader className="inline">
                   <span className="text-xl font-semibold">{dream.title}</span>

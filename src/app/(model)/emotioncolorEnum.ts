@@ -18,7 +18,7 @@ export enum EmotionColor {
   Pride = "#FF8C00", // Dark Orange
   Awe = "#BA55D3", // Medium Orchid
   Despair = "#2F4F4F", // Dark Slate Gray
-  Euphoria = "#FFFF00", // Yellow
+  Euphoria = "#7B68EE", // Yellow
   Shame = "#8B0000", // Dark Red
   Contentment = "#32CD32", // Lime Green
   Longing = "#483D8B", // Dark Slate Blue
